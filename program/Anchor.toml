@@ -1,0 +1,13 @@
+[toolchain]
+anchor = "0.30.1"
+solana = "1.18.22"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[programs.devnet]
+pusd_escrow = "PUSDXqSqhN7s5EvWqRGrQB3JpGtK1Z3vN7aTqzK3XqYq"
+
+[scripts]
+test = "yarn run mocha -t 10000 tests/*.ts"
