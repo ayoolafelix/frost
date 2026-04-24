@@ -42,7 +42,7 @@ export default function Dashboard() {
         const [escrowPda] = getEscrowAddress(publicKey);
         
         try {
-          const account = await program.account.escrow.fetch(escrowPda);
+          const account = await (program.account as any).escrow.fetch(escrowPda);
           if (account) {
             const escrow = account as unknown as EscrowAccount;
             setEscrows([{ ...escrow, pubkey: escrowPda }]);

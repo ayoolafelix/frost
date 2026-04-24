@@ -63,7 +63,7 @@ export default function Home() {
         },
       };
 
-      const { getProgram, getEscrowAddress, getVaultAddress, findProgramAddressSync } = await import("@/lib/anchorClient");
+      const { getProgram, getEscrowAddress, getVaultAddress } = await import("@/lib/anchorClient");
       
       const program = await getProgram(connection, anchorWallet);
       const [escrowPda] = getEscrowAddress(publicKey);

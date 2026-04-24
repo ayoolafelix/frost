@@ -47,7 +47,7 @@ export default function EscrowDetail() {
         const program = await getProgram(connection, anchorWallet);
 
         const pubkey = new PublicKey(escrowPubkey);
-        const account = await program.account.escrow.fetch(pubkey);
+        const account = await (program.account as any).escrow.fetch(pubkey);
 
         if (account) {
           setEscrow({ ...account, pubkey } as EscrowAccount);
@@ -94,7 +94,7 @@ export default function EscrowDetail() {
       setMessage({ type: "success", text: `Escrow funded! Tx: ${tx.slice(0, 8)}...` });
       
       setTimeout(async () => {
-        const updated = await program.account.escrow.fetch(new PublicKey(escrowPubkey));
+        const updated = await (program.account as any).escrow.fetch(new PublicKey(escrowPubkey));
         setEscrow({ ...updated, pubkey: new PublicKey(escrowPubkey) } as EscrowAccount);
       }, 2000);
     } catch (e: any) {
@@ -133,7 +133,7 @@ export default function EscrowDetail() {
       setMessage({ type: "success", text: `Funds released! Tx: ${tx.slice(0, 8)}...` });
       
       setTimeout(async () => {
-        const updated = await program.account.escrow.fetch(new PublicKey(escrowPubkey));
+        const updated = await (program.account as any).escrow.fetch(new PublicKey(escrowPubkey));
         setEscrow({ ...updated, pubkey: new PublicKey(escrowPubkey) } as EscrowAccount);
       }, 2000);
     } catch (e: any) {
@@ -172,7 +172,7 @@ export default function EscrowDetail() {
       setMessage({ type: "success", text: `Escrow disputed! Tx: ${tx.slice(0, 8)}...` });
       
       setTimeout(async () => {
-        const updated = await program.account.escrow.fetch(new PublicKey(escrowPubkey));
+        const updated = await (program.account as any).escrow.fetch(new PublicKey(escrowPubkey));
         setEscrow({ ...updated, pubkey: new PublicKey(escrowPubkey) } as EscrowAccount);
       }, 2000);
     } catch (e: any) {
@@ -211,7 +211,7 @@ export default function EscrowDetail() {
       setMessage({ type: "success", text: `Dispute resolved (${resolution})! Tx: ${tx.slice(0, 8)}...` });
       
       setTimeout(async () => {
-        const updated = await program.account.escrow.fetch(new PublicKey(escrowPubkey));
+        const updated = await (program.account as any).escrow.fetch(new PublicKey(escrowPubkey));
         setEscrow({ ...updated, pubkey: new PublicKey(escrowPubkey) } as EscrowAccount);
       }, 2000);
     } catch (e: any) {
