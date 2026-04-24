@@ -40,7 +40,6 @@ impl Default for Resolution {
 }
 
 #[account]
-#[derive(InitSpace)]
 pub struct Service {
     pub provider: Pubkey,
     pub title: String,
@@ -51,14 +50,11 @@ pub struct Service {
     pub bump: u8,
 }
 
-impl Service {
-    pub fn init_space(title: &str, description: &str) -> usize {
-        8 + 32 + 4 + title.len() + 4 + description.len() + 8 + 1 + 1
-    }
+impl Space for Service {
+    const INIT_SPACE: usize = 8 + 32 + 4 + 256 + 4 + 1024 + 8 + 1 + 1;
 }
 
 #[account]
-#[derive(InitSpace)]
 pub struct Escrow {
     pub initializer: Pubkey,
     pub recipient: Pubkey,
@@ -74,12 +70,19 @@ pub struct Escrow {
     pub bump: u8,
 }
 
+impl Space for Escrow {
+    const INIT_SPACE: usize = 8 + 32 + 32 + 4 + 8 + 8 + 32 + 32 + 32 + 32 + 32 + 4 + 1;
+}
+
 #[account]
-#[derive(InitSpace)]
 pub struct Treasury {
     pub authority: Pubkey,
     pub total_fees_collected: u64,
     pub bump: u8,
+}
+
+impl Space for Treasury {
+    const INIT_SPACE: usize = 8 + 32 + 8 + 1;
 }
 
 #[derive(Accounts)]
@@ -89,12 +92,13 @@ pub struct CreateService<'info> {
     #[account(
         init,
         payer = provider,
-        space = 8 + 300,
+        space = 8 + 32 + 4 + 256 + 4 + 1024 + 8 + 1 + 1,
         seeds = [seeds::SERVICE, provider.key().as_ref()],
         bump
     )]
     pub service: Account<'info, Service>,
     pub system_program: Program<'info, System>,
+    pub clock: Sysvar<'info, Clock>,
 }
 
 #[derive(Accounts)]
@@ -336,9 +340,9 @@ pub mod pusd_escrow {
         service.title = title;
         service.description = description;
         service.price = price;
-        service.created_at = Clock::get()?.unix_timestamp as u64;
+        service.created_at = ctx.accounts.clock.unix_timestamp as u64;
         service.active = true;
-        service.bump = ctx.bumps.service;
+        service.bump = *ctx.bumps.get("service").unwrap();
         Ok(())
     }
 
@@ -369,7 +373,7 @@ pub mod pusd_escrow {
         let treasury = &mut ctx.accounts.treasury;
         treasury.authority = ctx.accounts.authority.key();
         treasury.total_fees_collected = 0;
-        treasury.bump = ctx.bumps.treasury;
+        treasury.bump = *ctx.bumps.get("treasury").unwrap();
         Ok(())
     }
 
@@ -392,7 +396,7 @@ pub mod pusd_escrow {
         escrow.initializer_receive_token_account = ctx.accounts.initializer_deposit_token_account.key();
         escrow.recipient_token_account = ctx.accounts.recipient_token_account.key();
         escrow.state = EscrowState::Created;
-        escrow.bump = ctx.bumps.escrow;
+        escrow.bump = *ctx.bumps.get("escrow").unwrap();
         Ok(())
     }
 

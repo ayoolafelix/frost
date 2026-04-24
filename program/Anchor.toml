@@ -1,6 +1,6 @@
 [toolchain]
-anchor = "0.30.1"
-solana = "1.18.22"
+anchor = "0.26.0"
+solana = "1.16.0"
 
 [provider]
 cluster = "devnet"

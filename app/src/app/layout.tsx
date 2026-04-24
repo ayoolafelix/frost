@@ -1,3 +1,5 @@
+"use client";
+
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { WalletContextProvider } from "@/lib/wallet";
 import { AppLayout } from "@/components/Layout";
