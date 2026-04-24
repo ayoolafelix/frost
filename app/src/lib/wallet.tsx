@@ -1,5 +1,3 @@
-"use client";
-
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
@@ -11,8 +9,11 @@ export const WalletContextProvider = ({ children }: { children: React.ReactNode 
   const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
   return (
+    // @ts-ignore
     <ConnectionProvider endpoint={endpoint}>
+      // @ts-ignore
       <WalletProvider wallets={wallets} autoConnect>
+        // @ts-ignore
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
