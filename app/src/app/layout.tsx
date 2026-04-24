@@ -1,14 +1,9 @@
-"use client";
-
-import "@solana/wallet-adapter-react-ui/styles.css";
-import { WalletContextProvider } from "@/lib/wallet";
-import { AppLayout } from "@/components/Layout";
-import "@/styles/globals.css";
-
 export const metadata = {
   title: "PUSD Escrow Network",
   description: "Solana-based escrow protocol using PUSD",
 };
+
+import { Providers } from "@/components/Providers";
 
 export default function RootLayout({
   children,
@@ -18,9 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <WalletContextProvider>
-          <AppLayout>{children}</AppLayout>
-        </WalletContextProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

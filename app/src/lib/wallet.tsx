@@ -20,4 +20,4 @@ export const WalletContextProvider = ({ children }: { children: React.ReactNode 
 };
 
 export const PROGRAM_ID = "PUSDXqSqhN7s5EvWqRGrQB3JpGtK1Z3vN7aTqzK3XqYq";
-export const PUSD_MINT = "4zJbXXtKqpBzzqTbB1xYZMtYDevb7p7Q2C3TqC6oXoYqX";
+export const PUSD_MINT = "EPjFWdd5AufqSSqeM5mLPxaY6DVTNRsGZLtBfkZ16MyW";

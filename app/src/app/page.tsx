@@ -5,17 +5,21 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "@coral-xyz/anchor";
 import { useRouter } from "next/navigation";
-import { getProgram, getEscrowAddress, getVaultAddress, createEscrow } from "@/lib/anchorClient";
 import { PUSD_MINT } from "@/lib/wallet";
 
 export default function Home() {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const router = useRouter();
+  const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,11 +63,11 @@ export default function Home() {
         },
       };
 
+      const { getProgram, getEscrowAddress, getVaultAddress, findProgramAddressSync } = await import("@/lib/anchorClient");
+      
       const program = await getProgram(connection, anchorWallet);
       const [escrowPda] = getEscrowAddress(publicKey);
       const [vaultPda] = getVaultAddress(publicKey, mint);
-
-      const { findProgramAddressSync } = await import("@solana/web3.js");
       
       const getAssociatedTokenAddress = (owner: PublicKey, mint: PublicKey) => {
         return findProgramAddressSync(
@@ -105,6 +109,14 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  if (!ready) {
+    return (
+      <div className="card">
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      </div>
+    );
+  }
 
   if (!publicKey) {
     return (
