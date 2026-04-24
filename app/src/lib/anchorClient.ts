@@ -1,5 +1,5 @@
 import { Connection, PublicKey } from "@solana/web3.js";
-import { Program, AnchorProvider, Idl, BN } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, Idl } from "@coral-xyz/anchor";
 
 export type EscrowState = 
   | { Created: {} }
@@ -270,12 +270,12 @@ export function getEscrowStateClass(state: EscrowState | string): string {
   return `status-${label}`;
 }
 
-export async function getProgram(connection: Connection, wallet: any): Promise<Program<typeof ESCROW_IDL>> {
+export async function getProgram(connection: any, wallet: any): Promise<any> {
   const provider = new AnchorProvider(connection, wallet, {
     commitment: "confirmed",
     preflightCommitment: "confirmed",
   });
-  return new Program(ESCROW_IDL as Idl, PROGRAM_ID, provider);
+  return new Program(ESCROW_IDL as any, PROGRAM_ID, provider);
 }
 
 export async function getService(

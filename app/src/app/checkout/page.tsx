@@ -22,7 +22,7 @@ function CheckoutContent() {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState<"details" | "escrow" | "fund" | "complete">(publicKey ? "details" : "connect");
+  const [step, setStep] = useState<"details" | "escrow" | "fund" | "complete">(publicKey ? "details" : "details");
   const [message, setMessage] = useState({ type: "", text: "" });
   
   const serviceId = searchParams.get("service") || "";
@@ -33,7 +33,7 @@ function CheckoutContent() {
     : { title: searchParams.get("service") || "Service", description: "", price: servicePrice, image: "⚡" };
 
   useEffect(() => {
-    if (publicKey && step === "connect") {
+    if (publicKey && step === "details") {
       setStep("details");
     }
   }, [publicKey, step]);
